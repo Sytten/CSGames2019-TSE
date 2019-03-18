@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/Aboisier/cs2019-McBrooke/branch/master/graph/badge.svg?token=hmwFpn33RO)](https://codecov.io/gh/Aboisier/cs2019-McBrooke)
+[![Build Status](https://travis-ci.com/Aboisier/cs2019-McBrooke.svg?token=vuBsBM3yD6PMvt3zwT9s&branch=master)](https://travis-ci.com/Aboisier/cs2019-McBrooke)
+
 # Readme
 
 Pour configurer votre projet, suivez les étapes suivantes:
