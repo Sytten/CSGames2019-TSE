@@ -1,5 +1,5 @@
 export class Status {
   constructor(
-      public status: string
+      public status: string,
   ) { }
 }

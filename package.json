@@ -9,7 +9,8 @@
         "postinstall": "npm run build",
         "test": "nyc mocha src/**/*.spec.ts",
         "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-        "test:watch": "mocha -r ts-node/register src/**/*.spec.ts -w"
+        "test:watch": "mocha -r ts-node/register src/**/*.spec.ts -w",
+        "tslint": "tslint -c tslint.json -p tsconfig.json"
     },
     "author": "",
     "license": "ISC",
@@ -23,6 +24,8 @@
         "reflect-metadata": "^0.1.12",
         "request": "^2.88.0",
         "request-promise": "^4.2.2",
+        "tslint": "^5.14.0",
+        "tslint-config-airbnb": "^5.11.1",
         "typescript": "^3.0.3",
         "uuid": "^3.3.2"
     },

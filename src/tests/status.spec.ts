@@ -1,4 +1,4 @@
-import * as request from 'supertest';
+import * as request from "supertest";
 import chai = require("chai");
 import app from "../app";
 
@@ -8,6 +8,6 @@ describe("GET /status", () => {
   it("should return 200 OK", () => {
     return request(app)
       .get("/api/status")
-      .expect(200, {"status": "Up"});
+      .expect(200, { status: "Up" });
   });
 });
