@@ -20,6 +20,7 @@ export class Api {
     router.get("/auth/userid", authController.getUserID);
     router.post("/articles", articleController.create);
     router.put("/articles", articleController.update);
+    router.delete("/articles/:ARTICLE_ID", articleController.remove);
     return router;
   }
 }

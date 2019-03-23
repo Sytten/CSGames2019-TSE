@@ -81,3 +81,27 @@ export let update = async (req: Request, res: Response) => {
 
   res.send({ message: "Success" });
 };
+
+export let remove = async (req: Request, res: Response) => {
+  const articleId = req.params.ARTICLE_ID;
+
+  const email = res.locals.user.email;
+
+  const articleDoc: Document = await ArticleSchema.default.findById(articleId);
+  if (articleDoc === null) {
+    res.status(404).send();
+    return;
+  }
+
+  const accountDoc: Document = await Account.findOne({ email });
+  const tokenUserId = accountDoc.id;
+  const authorId = articleDoc.get("userId").toString();
+  if (tokenUserId !== authorId) {
+    res.status(401).send();
+    return;
+  }
+
+  await ArticleSchema.default.deleteOne({ _id: articleDoc.id });
+
+  res.send({ message: "Article succesfully deleted." });
+};
