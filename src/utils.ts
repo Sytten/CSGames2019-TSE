@@ -17,7 +17,7 @@ export function getJwtSecret(): string {
 
 export function getParadiseURI(): string {
   if (isIntegrationTest()) {
-    throw new Exception("no-uri", "Should consider the external API down for integration tests");
+    throw new Error("Should consider the external API down for integration tests");
   }
   return process.env.ARTICLES_API_BASE_URI;
 }
