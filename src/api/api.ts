@@ -18,6 +18,7 @@ export class Api {
     // Authenticated paths
     router.use(authenticationMiddleware);
     router.get("/auth/userid", authController.getUserID);
+    router.post("/articles", articleController.create);
     return router;
   }
 }
