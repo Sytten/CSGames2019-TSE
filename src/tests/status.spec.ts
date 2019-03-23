@@ -1,5 +1,5 @@
 import * as request from "supertest";
-import * as chai from 'chai';
+import * as chai from "chai";
 import app from "../app";
 
 const expect = chai.expect;

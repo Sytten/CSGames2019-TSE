@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import * as utils from './utils';
+import * as utils from "./utils";
 if (utils.isDev()) dotenv.config();
 
 import * as bodyParser from "body-parser";
