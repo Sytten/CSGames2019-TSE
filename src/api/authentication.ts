@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import * as Account from "../schemas/account.schema";
 import { Document } from "mongoose";
 import * as jwt from "jsonwebtoken";
-
-const jwtSecretKey = "44a0a45f31cf8122651e28710a43530e";
+import * as utils from "../utils";
 
 export let createAccount = async (req: Request, res: Response) => {
   const fullName: string = req.body.fullName;
@@ -44,7 +43,13 @@ export let authenticate = async (req: Request, res: Response) => {
     return;
   }
 
-  const token: string = jwt.sign({ email, fullName: user.get("fullName") }, jwtSecretKey);
+  const token: string = jwt.sign({ email, fullName: user.get("fullName") }, utils.getJwtSecret());
 
   res.send({ accessToken: token });
+};
+
+export const getUserID = async (req: Request, res: Response) => {
+  const email = res.locals.user["email"];
+  const userId = await Account.default.findOne({ email }).exec();
+  res.send({ id: userId.id });
 };

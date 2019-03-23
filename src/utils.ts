@@ -5,3 +5,11 @@ export function isDev() {
 export function isIntegrationTest() {
   return process.env.NODE_ENV === undefined;
 }
+
+export function getJwtSecret() {
+  if(isIntegrationTest()) {
+    return "TEST_SECRET"
+  } else {
+    return process.env.JWT_SECRET;
+  }
+}

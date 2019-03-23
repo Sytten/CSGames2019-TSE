@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import authenticationMiddleware from "../middlewares/authentification"
 import * as statusController from "./status";
 import * as authController from "./authentication";
 import * as articleController from "./article";
@@ -13,6 +14,10 @@ export class Api {
     router.get("/articles", articleController.getAll);
     router.get("/article/:ARTICLE_ID", articleController.get);
     router.get("/articles/user/:USER_ID", articleController.getForUser);
+
+    // Authenticated paths
+    router.use(authenticationMiddleware);
+    router.get("/auth/userid", authController.getUserID);
     return router;
   }
 }
