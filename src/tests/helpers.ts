@@ -4,20 +4,20 @@ const email = "tse@csgames.com";
 const password = "password1234";
 const articlesEndpoint = "/api/articles";
 
-export const getValidUser = async (app) => {
+export const getValidUser = async (app, userEmail=email) => {
   const createAccountEndpoint = "/api/auth/createAccount";
   const fullName = "CS GAMES";
   return await request(app)
     .post(createAccountEndpoint)
-    .send({ fullName, email, password })
+    .send({ fullName, password, email: userEmail })
     .expect(201);
 };
 
-export const getValidToken = async (app) => {
+export const getValidToken = async (app, userEmail=email) => {
   const authenticateEndpoint = "/api/auth/authenticate";
   return await request(app)
     .post(authenticateEndpoint)
-    .send({ email, password })
+    .send({ password, email: userEmail })
     .expect(200)
     .then((response) => {
       return response.body.accessToken;

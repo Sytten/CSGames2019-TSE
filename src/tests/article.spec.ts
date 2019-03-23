@@ -145,8 +145,20 @@ describe("Test article API", () => {
           .expect(404);
       });
     });
-    // delete ordinaire
-    // delete autre user
-    // delete objet inexistant
+    describe("with ID of other user", () => {
+      it("should return 404", async () => {
+        const article = await helpers.createArticle(app, token);
+
+        const email = "toto@csgames.org";
+        await helpers.getValidUser(app, email);
+        const otherToken = await helpers.getValidToken(app, email);
+
+        return request(app)
+          .delete(`${articlesEndpoint}/${article.id}`)
+          .set(`Authorization`, `Bearer ${otherToken}`)
+          .send()
+          .expect(401);
+      });
+    });
   });
 });
