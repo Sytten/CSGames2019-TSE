@@ -20,3 +20,12 @@ export let get = async (req: Request, res: Response) => {
 
   res.send(JSON.stringify(Article.fromDocument(articleDoc)));
 };
+
+export let getForUser = async (req: Request, res: Response) => {
+  const userId: string = req.params.USER_ID;
+  console.log(userId);
+  const articleDocs: Document[] = await ArticleSchema.default.find({ userId });
+  console.log(articleDocs);
+  const articles = articleDocs.map((doc: Document) => Article.fromDocument(doc));
+  res.send(articles);
+};

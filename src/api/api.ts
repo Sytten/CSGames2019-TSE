@@ -12,6 +12,7 @@ export class Api {
     router.post("/auth/authenticate", authController.authenticate);
     router.get("/articles", articleController.getAll);
     router.get("/article/:ARTICLE_ID", articleController.get);
+    router.get("/articles/user/:USER_ID", articleController.getForUser);
     return router;
   }
 }
