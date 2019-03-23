@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
-if (isDev()) dotenv.config();
+import * as utils from './utils';
+if (utils.isDev()) dotenv.config();
 
 import * as bodyParser from "body-parser";
 import * as express from "express";
@@ -7,7 +8,7 @@ import * as path from "path";
 import { Api } from "./api/api";
 import * as dbConfig from "./config/database";
 
-if (isDev()) {
+if (utils.isDev()) {
   console.log("Starting server in dev mode.");
 } else {
   console.log("Starting server in prod mode.");
@@ -29,7 +30,7 @@ app.use((req, res, next) => {
 const api = new Api();
 app.use("/api", api.getRouter());
 
-if (isDev()) {
+if (utils.isDev()) {
   app.use(express.static(path.resolve(__dirname, "../frontend")));
   app.get("/*", (req, res) => res.sendFile(path.resolve(__dirname, "../frontend/index.html")));
 } else {
@@ -37,10 +38,8 @@ if (isDev()) {
   app.get("/*", (req, res) => res.sendFile("index.html"));
 }
 
-function isDev() {
-  return process.env.NODE_ENV === "development";
+if (!utils.isIntegrationTest()) {
+  dbConfig.configure();
 }
-
-dbConfig.configure();
 
 export default app;
