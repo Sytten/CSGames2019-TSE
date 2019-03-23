@@ -1,5 +1,4 @@
 import * as request from "supertest";
-import { expect } from 'chai';
 
 const email = "tse@csgames.com";
 const password = "password1234";

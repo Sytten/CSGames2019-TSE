@@ -1,13 +1,12 @@
 import * as request from "supertest";
 import * as mongoose from "mongoose";
 import MongoMemoryServer from "mongodb-memory-server";
-import { expect } from 'chai';
+import { expect } from "chai";
 import app from "../app";
-import * as helpers from './helpers';
+import * as helpers from "./helpers";
 
 describe("Test article API", () => {
   const articlesEndpoint = "/api/articles";
-  const articleEndpoint = "/api/article";
   const article = {
     title : "An apple",
     subtitle : "An apple's subtitle",
@@ -94,7 +93,7 @@ describe("Test article API", () => {
     describe("with invalid id", () => {
       it("should return 400 BAD REQUEST", () => {
         return request(app)
-          .get(`${articleEndpoint}/5c967d4fc1cf6727b09f5231`)
+          .get(`${articlesEndpoint}/5c967d4fc1cf6727b09f5231`)
           .send()
           .expect(404);
       });
@@ -104,11 +103,11 @@ describe("Test article API", () => {
       const token = await helpers.getValidToken(app);
       const article = await helpers.createArticle(app, token);
       return request(app)
-          .get(`${articleEndpoint}/${article.id}`)
+          .get(`${articlesEndpoint}/${article.id}`)
           .send()
           .expect(200)
           .then((response) => {
-            expect(response.body.id).to.equal(article.id)
+            expect(response.body.id).to.equal(article.id);
           });
     });
   });
