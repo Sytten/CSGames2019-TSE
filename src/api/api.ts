@@ -7,12 +7,12 @@ import * as articleController from "./article";
 
 export class Api {
   public getRouter(): Router {
-    const router = Router();
+    const router: Router = Router();
     router.get("/status", statusController.getStatus);
     router.post("/auth/createAccount", authController.createAccount);
     router.post("/auth/authenticate", authController.authenticate);
     router.get("/articles", articleController.getAll);
-    router.get("/article/:ARTICLE_ID", articleController.get);
+    router.get("/articles/:ARTICLE_ID", articleController.get);
     router.get("/articles/user/:USER_ID", articleController.getForUser);
 
     // Authenticated paths

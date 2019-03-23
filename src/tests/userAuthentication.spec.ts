@@ -1,9 +1,9 @@
 import * as request from "supertest";
 import * as mongoose from "mongoose";
 import MongoMemoryServer from "mongodb-memory-server";
-import { expect } from 'chai';
+import { expect } from "chai";
 import app from "../app";
-import * as helpers from './helpers';
+import * as helpers from "./helpers";
 
 describe("Test authentication of user", () => {
   const userIdEndpoint = "/api/auth/userid";
