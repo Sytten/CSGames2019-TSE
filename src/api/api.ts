@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
+import * as statusController from "./status";
+
 export class Api {
     public getRouter(): Router {
         const router = Router();
-        // TODO: You probably want to register your routes here.
+        router.get("/status", statusController.getStatus);
         return router;
     }
 }

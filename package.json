@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "start": "cross-env NODE_ENV=development node ./build/app.js",
+        "start": "cross-env NODE_ENV=development node ./build/server.js",
         "start-watch": "cross-env NODE_ENV=development nodemon",
         "build": "tsc && cpy src/log4js.json build/ && cpy frontend/**/* build/  --parents",
         "postinstall": "npm run build",
@@ -45,7 +45,8 @@
         "nodemon": "^1.18.10",
         "nyc": "^13.3.0",
         "ts-node": "^7.0.1",
-        "typemoq": "^2.1.0"
+        "typemoq": "^2.1.0",
+        "supertest": "^3.0.0"
     },
     "nyc": {
         "exclude": [
