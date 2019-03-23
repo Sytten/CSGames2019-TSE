@@ -50,4 +50,18 @@ describe("Test article API", () => {
       });
     });
   });
+
+  describe("GET /article/:id", () => {
+    describe("with no articles", () => {
+      it("should return 200 OK", () => {
+        return request(app)
+          .get(articlesEndpoint)
+          .send()
+          .expect(200, []);
+      });
+    }),
+    describe("with many articles", () => {
+
+    });
+  });
 });
