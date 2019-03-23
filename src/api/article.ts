@@ -57,7 +57,14 @@ export let update = async (req: Request, res: Response) => {
 
   const email = res.locals.user.email;
 
-  const articleDoc: Document = await ArticleSchema.default.findOne({ id: articleId });
+  if (requestBody.body === undefined
+    || requestBody.title === undefined
+    || requestBody.subtitle === undefined
+    || requestBody.leadParagraph === undefined) {
+    res.status(400).send();
+  }
+
+  const articleDoc: Document = await ArticleSchema.default.findById(articleId);
   if (articleDoc === null) {
     res.status(404).send();
     return;
@@ -69,15 +76,10 @@ export let update = async (req: Request, res: Response) => {
     return;
   }
 
-  try {
-    await articleDoc.updateOne({
-      ...requestBody,
-      date: Date.now(),
+  await articleDoc.updateOne(
+    {
+      ...requestBody, date: Date.now(),
     });
-  } catch {
-    res.status(400).send();
-    return;
-  }
 
   res.send({ message: "Success" });
 };
