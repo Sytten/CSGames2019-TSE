@@ -7,9 +7,8 @@ export function isIntegrationTest() {
 }
 
 export function getJwtSecret() {
-  if(isIntegrationTest()) {
-    return "TEST_SECRET"
-  } else {
-    return process.env.JWT_SECRET;
+  if (isIntegrationTest()) {
+    return "TEST_SECRET";
   }
+  return process.env.JWT_SECRET;
 }

@@ -16,13 +16,19 @@ export default (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  // Verify signature
-  if (!jwt.verify(token, utils.getJwtSecret())) {
+  try {
+    // Verify signature
+    if (!jwt.verify(token, utils.getJwtSecret())) {
+      res.status(403).send();
+      return;
+    }
+
+    // Store claims
+    res.locals.user = jwt.decode(token);
+  } catch {
     res.status(403).send();
     return;
   }
 
-  // Store claims
-  res.locals.user = jwt.decode(token);
   next();
 };
