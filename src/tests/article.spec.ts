@@ -16,6 +16,7 @@ describe("Test article API", () => {
     category : "An apple's category",
   };
   let mongoServer;
+  let token;
 
   before(async () => {
     mongoServer = new MongoMemoryServer();
@@ -34,6 +35,11 @@ describe("Test article API", () => {
     await mongoose.connection.db.dropDatabase();
   });
 
+  beforeEach(async () => {
+    await helpers.getValidUser(app);
+    token = await helpers.getValidToken(app);
+  });
+
   describe("GET /articles", () => {
     describe("with no articles", () => {
       it("should return 200 OK", () => {
@@ -43,28 +49,25 @@ describe("Test article API", () => {
           .expect(200, []);
       });
     }),
-    describe("with many articles", async () => {
-      await helpers.getValidUser(app);
-      const token = await helpers.getValidToken(app);
+    describe("with many articles", () => {
+      it("should return 200 OK", async () => {
+        await helpers.createArticle(app, token);
+        await helpers.createArticle(app, token);
 
-      await helpers.createArticle(app, token);
-      await helpers.createArticle(app, token);
-
-      return request(app)
+        return request(app)
           .get(articlesEndpoint)
           .send()
           .expect(200)
           .then((response) => {
             expect(response.body).to.have.length(2);
           });
+      });
     });
   });
 
   describe("POST /articles", () => {
     describe("with all parameters", () => {
       it("should return 200 OK", async () => {
-        await helpers.getValidUser(app);
-        const token = await helpers.getValidToken(app);
         return request(app)
           .post(articlesEndpoint)
           .set(`Authorization`, `Bearer ${token}`)
@@ -78,8 +81,6 @@ describe("Test article API", () => {
     });
     describe("with missing parameters", () => {
       it("should return 400 BAD REQUEST", async () => {
-        await helpers.getValidUser(app);
-        const token = await helpers.getValidToken(app);
         return request(app)
           .post(articlesEndpoint)
           .set(`Authorization`, `Bearer ${token}`)
@@ -98,17 +99,54 @@ describe("Test article API", () => {
           .expect(404);
       });
     }),
-    describe("with valid id", async () => {
-      await helpers.getValidUser(app);
-      const token = await helpers.getValidToken(app);
-      const article = await helpers.createArticle(app, token);
-      return request(app)
+    describe("with valid id", () => {
+      it("should return 200 OK", async() => {
+        const article = await helpers.createArticle(app, token);
+        return request(app)
           .get(`${articlesEndpoint}/${article.id}`)
           .send()
           .expect(200)
           .then((response) => {
             expect(response.body.id).to.equal(article.id);
           });
+      });
     });
+  });
+
+  describe("PUT /article/:id", () => {
+    // update ordinaire
+    // update autre user
+    // update objet inexistant
+    // update missing fields
+    // update autre fields
+  });
+
+  describe("DELETE /article/:id", () => {
+    describe("with valid ID", () => {
+      it("should return 200 OK", async () => {
+        const article = await helpers.createArticle(app, token);
+        expect(await helpers.getAllArticles(app)).to.have.length(1);
+
+        await request(app)
+          .delete(`${articlesEndpoint}/${article.id}`)
+          .set(`Authorization`, `Bearer ${token}`)
+          .send()
+          .expect(200);
+
+        expect(await helpers.getAllArticles(app)).to.have.length(0);
+      });
+    }),
+    describe("with invalid ID", () => {
+      it("should return 404", async () => {
+        return request(app)
+          .delete(`${articlesEndpoint}/5c968e4669988808e86fd9a2`)
+          .set(`Authorization`, `Bearer ${token}`)
+          .send()
+          .expect(404);
+      });
+    });
+    // delete ordinaire
+    // delete autre user
+    // delete objet inexistant
   });
 });

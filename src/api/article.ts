@@ -19,7 +19,7 @@ export const get = async (req: Request, res: Response) => {
     return;
   }
 
-  res.send(JSON.stringify(Article.fromDocument(articleDoc)));
+  res.send(Article.fromDocument(articleDoc));
 };
 
 export const getForUser = async (req: Request, res: Response) => {
