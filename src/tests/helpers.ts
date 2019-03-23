@@ -1,19 +1,19 @@
 import * as request from "supertest";
-import { expect } from 'chai';
 
 const email = "tse@csgames.com";
 const password = "password1234";
+const articlesEndpoint = "/api/articles";
 
-export async function getValidUser(app) {
+export const getValidUser = async (app) => {
   const createAccountEndpoint = "/api/auth/createAccount";
   const fullName = "CS GAMES";
   return await request(app)
     .post(createAccountEndpoint)
     .send({ fullName, email, password })
     .expect(201);
-}
+};
 
-export async function getValidToken(app) {
+export const getValidToken = async (app) => {
   const authenticateEndpoint = "/api/auth/authenticate";
   return await request(app)
     .post(authenticateEndpoint)
@@ -22,9 +22,9 @@ export async function getValidToken(app) {
     .then((response) => {
       return response.body.accessToken;
     });
-}
+};
 
-export async function createArticle(app, token) {
+export const createArticle = async (app, token) => {
   const article = {
     title : "An apple",
     subtitle : "An apple's subtitle",
@@ -33,7 +33,6 @@ export async function createArticle(app, token) {
     body : "An apple's body",
     category : "An apple's category",
   };
-  const articlesEndpoint = "/api/articles";
   return await request(app)
     .post(articlesEndpoint)
     .set(`Authorization`, `Bearer ${token}`)
@@ -42,4 +41,14 @@ export async function createArticle(app, token) {
     .then((response) => {
       return response.body;
     });
-}
+};
+
+export const getAllArticles = async (app) => {
+  return request(app)
+    .get(articlesEndpoint)
+    .send()
+    .expect(200)
+    .then((response) => {
+      return response.body;
+    });
+};
