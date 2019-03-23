@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as ArticleSchema from "../schemas/article.schema";
 import { Document } from "mongoose";
 import { Article } from "../models/article.model";
+import Account from "../schemas/account.schema";
 
 export let getAll = async (req: Request, res: Response) => {
   const articlesDocs: Document[] = await ArticleSchema.default.find();
@@ -29,29 +30,19 @@ export let getForUser = async (req: Request, res: Response) => {
 };
 
 export let create = async (req: Request, res: Response) => {
-  const title = req.body.title;
-  const subtitle = req.body.subtitle;
-  const leadParagraph = req.body.leadParagraph;
-  const imageUrl = req.body.imageUrl;
-  const body = req.body.body;
-  const category = req.body.category;
-
-  const userId = res.locals.user.userId;
+  const email = res.locals.user.email;
   const author = res.locals.user.fullName;
 
-  const date = Date.now();
+  const accountDoc: Document = await Account.findOne({ email });
 
-  const article = await ArticleSchema.default.create({
-    title,
-    subtitle,
-    leadParagraph,
-    imageUrl,
-    body,
-    category,
-    userId,
-    author,
-    date,
-  });
-
-  res.send({ message: "Success", id: article.id });
+  try {
+    const article = await ArticleSchema.default.create({
+      ...req.body,
+      author,
+      userId: accountDoc.id,
+    });
+    res.send({ message: "Success", id: article.id });
+  } catch {
+    res.status(400).send();
+  }
 };
