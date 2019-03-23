@@ -1,9 +1,9 @@
 import mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema({
-  fullname: String,
+  fullName: String,
   email: String,
   password: String,
 });
 
-export default mongoose.model("AccountModel", accountSchema);
+export default mongoose.model("Account", accountSchema);
