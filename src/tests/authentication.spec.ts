@@ -1,7 +1,7 @@
 import * as request from "supertest";
 import * as mongoose from "mongoose";
 import MongoMemoryServer from "mongodb-memory-server";
-import { expect } from 'chai';
+import { expect } from "chai";
 import app from "../app";
 
 describe("Test authentication", () => {
@@ -42,7 +42,10 @@ describe("Test authentication", () => {
 
       describe("with registered email", () => {
         it("should return 500 INTERNAL SERVER ERROR", async () => {
-          await request(app).post(createAccountEndpoint).send({ fullName, email, password }).expect(201);
+          await request(app)
+            .post(createAccountEndpoint)
+            .send({ fullName, email, password })
+            .expect(201);
 
           return request(app)
             .post(createAccountEndpoint)
@@ -71,7 +74,10 @@ describe("Test authentication", () => {
       }),
       describe("with missing password", () => {
         it("should return 400 BAD REQUEST", () => {
-          return request(app).post(createAccountEndpoint).send({ fullName, email }).expect(400);
+          return request(app)
+            .post(createAccountEndpoint)
+            .send({ fullName, email })
+            .expect(400);
         });
       });
     });
@@ -81,14 +87,17 @@ describe("Test authentication", () => {
     describe("with all parameters", () => {
       describe("with registered user", () => {
         it("should return 200 OK with token", async () => {
-          await request(app).post(createAccountEndpoint).send({ fullName, email, password }).expect(201);
+          await request(app)
+            .post(createAccountEndpoint)
+            .send({ fullName, email, password })
+            .expect(201);
 
           return request(app)
             .post(authenticateEndpoint)
             .send({ email, password })
             .expect(200)
-            .then(response => {
-              expect(response.body.accessToken).to.be.a('string');
+            .then((response) => {
+              expect(response.body.accessToken).to.be.a("string");
             });
         });
       }),
@@ -99,13 +108,16 @@ describe("Test authentication", () => {
             .send({ email, password })
             .expect(403);
         });
-      })
+      });
     }),
 
     describe("with missing parameter", () => {
       describe("with missing email", () => {
         it("should return 404 BAD REQUEST", async () => {
-          await request(app).post(createAccountEndpoint).send({ fullName, email, password }).expect(201);
+          await request(app)
+            .post(createAccountEndpoint)
+            .send({ fullName, email, password })
+            .expect(201);
 
           return request(app)
             .post(authenticateEndpoint)
@@ -115,7 +127,10 @@ describe("Test authentication", () => {
       }),
       describe("with missing password", () => {
         it("should return 404 BAD REQUEST", async () => {
-          await request(app).post(createAccountEndpoint).send({ fullName, email, password }).expect(201);
+          await request(app)
+            .post(createAccountEndpoint)
+            .send({ fullName, email, password })
+            .expect(201);
 
           return request(app)
             .post(authenticateEndpoint)
