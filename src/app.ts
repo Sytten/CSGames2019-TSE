@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as path from 'path';
 import { Api } from './api/api';
+import * as dbConfig from './config/database';
 
 if (isDev()) {
     console.log('Starting server in dev mode.');
@@ -41,5 +42,7 @@ else {
 function isDev() {
     return process.env.NODE_ENV === 'development';
 }
+
+dbConfig.configure();
 
 export default app;
