@@ -8,6 +8,7 @@ export class Api {
     const router = Router();
     router.get("/status", statusController.getStatus);
     router.post("/auth/createAccount", authController.createAccount);
+    router.post("/auth/authenticate", authController.authenticate);
     return router;
   }
 }
