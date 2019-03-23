@@ -20,7 +20,8 @@
             "reflect-metadata",
             "mocha",
             "chai",
-            "typemoq"
+            "typemoq",
+            "node"
         ],
         "paths": {
             "*": [
