@@ -46,3 +46,38 @@ export let create = async (req: Request, res: Response) => {
     res.status(400).send();
   }
 };
+
+export let update = async (req: Request, res: Response) => {
+  const articleId = req.body.id;
+  const requestUserId = req.body.userId;
+
+  const requestBody = req.body;
+  delete requestBody.id;
+  delete requestBody.userId;
+
+  const email = res.locals.user.email;
+
+  const articleDoc: Document = await ArticleSchema.default.findOne({ id: articleId });
+  if (articleDoc === null) {
+    res.status(404).send();
+    return;
+  }
+
+  const accountDoc: Document = await Account.findOne({ email });
+  if (requestUserId !== accountDoc.id) {
+    res.status(401).send();
+    return;
+  }
+
+  try {
+    await articleDoc.updateOne({
+      ...requestBody,
+      date: Date.now(),
+    });
+  } catch {
+    res.status(400).send();
+    return;
+  }
+
+  res.send({ message: "Success" });
+};
