@@ -15,6 +15,14 @@ describe("Test article API", () => {
     body : "An apple's body",
     category : "An apple's category",
   };
+  const otherArticle = {
+    title : "An orange",
+    subtitle : "An apple's subtitle",
+    leadParagraph : "An apple's lead paragraph",
+    imageUrl : "https://i5.walmartimages.ca/images/Large/428/5_r/6000195494285_R.jpg",
+    body : "An apple's body",
+    category : "An apple's category",
+  };
   let mongoServer;
   let token;
 
@@ -114,6 +122,24 @@ describe("Test article API", () => {
   });
 
   describe("PUT /article/:id", () => {
+    describe("with valid ID", () => {
+      it("should return 200 OK", async () => {
+        const article = await helpers.createArticle(app, token);
+        const userId = await helpers.getAllArticles(app)[0].userId;
+
+        await request(app)
+          .put(`${articlesEndpoint}`)
+          .set(`Authorization`, `Bearer ${token}`)
+          .send({
+            id: article.id,
+            userId,
+            ...otherArticle,
+          })
+          .expect(200);
+
+        expect(await helpers.getAllArticles(app)[0].title).to.equal("An orange");
+      });
+    })
     // update ordinaire
     // update autre user
     // update objet inexistant
